@@ -2,15 +2,17 @@
     const apiUrl = 'https://nominatim.openstreetmap.org/search?format=json&q=';
     let results = [];
     let query = '';
-    let promise = query && queryNominatim(query);
+    let promise = '';
 
     async function queryNominatim(query) {
         const response = await fetch(apiUrl + query);
         const result = await response.text();
 
         if (response.ok) {
+            console.log('response is ok!');
 			return JSON.parse(result);
 		} else {
+            console.log('oh no!');
 			throw new Error(result);
 		}
     }
@@ -52,6 +54,7 @@
 <input bind:value={query}>
 <button on:click={() => query && handleClick()}>Search</button>
 
+<!-- Await Block! -->
 {#await promise}
 	<p>searching</p>
 {:then results}
