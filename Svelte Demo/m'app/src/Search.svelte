@@ -1,6 +1,8 @@
 <script>
-    const apiUrl = 'https://nominatim.openstreetmap.org/search?format=json&q=';
-    let results = [];
+	import Map from './Map.svelte';
+    const resultLimit = 1;
+    const apiUrl = `https://nominatim.openstreetmap.org/search?format=json&limit=${resultLimit}&q=`;
+    let result = null;
     let query = '';
     let promise = '';
 
@@ -10,7 +12,7 @@
 
         if (response.ok) {
             console.log('response is ok!');
-			return JSON.parse(result);
+			return JSON.parse(result)[0];
 		} else {
             console.log('oh no!');
 			throw new Error(result);
@@ -41,13 +43,8 @@
         font-size: 1.5rem;
     }
 
-    .results {
-        margin-top: 3rem;
-    }
-
-    .result {
-        font-size: 1.25rem;
-        padding: 0.5rem;
+    .error {
+        color: red;
     }
 </style>
 
@@ -56,16 +53,14 @@
 
 <!-- Await Block! -->
 {#await promise}
-	<p>searching</p>
-{:then results}
-	<div class="results">
-    {#each results as result}
-        <div class="result">
-            {result.display_name}
-        </div>
-    {/each}
-</div>
+    <p>searching</p>
+{:then result}
+    {#if result}
+        <Map location={result}></Map>
+    {:else}
+        <p>no results</p>
+    {/if}
 {:catch error}
-	<p style="color: red">{error.message}</p>
+    <p class="error">{error.message}</p>
 {/await}
 
