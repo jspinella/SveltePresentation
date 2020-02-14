@@ -51,16 +51,4 @@
 <input bind:value={query}>
 <button on:click={() => query && handleClick()}>Search</button>
 
-<!-- Await Block! -->
-{#await promise}
-    <p>searching</p>
-{:then result}
-    {#if result}
-        <Map location={result}></Map>
-    {:else}
-        <p>no results</p>
-    {/if}
-{:catch error}
-    <p class="error">{error.message}</p>
-{/await}
-
+<!-- TODO: Await Block! -->
