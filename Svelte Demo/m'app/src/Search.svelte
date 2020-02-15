@@ -1,10 +1,12 @@
 <script>
 	import Map from './Map.svelte';
-    const resultLimit = 1;
-    const apiUrl = `https://nominatim.openstreetmap.org/search?format=json&limit=${resultLimit}&q=`;
-    let result = null;
-    let query = '';
-    let promise = '';
+    const apiUrl = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=`;
+    let query;
+    let promise;
+
+    function handleClick() {
+        promise = queryNominatim(query);
+    }
 
     async function queryNominatim(query) {
         const response = await fetch(apiUrl + query);
@@ -17,10 +19,6 @@
             console.log('oh no!');
 			throw new Error(result);
 		}
-    }
-
-    function handleClick() {
-        promise = queryNominatim(query);
     }
 </script>
 
